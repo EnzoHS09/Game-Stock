@@ -1,4 +1,4 @@
-import Produto from '../models/Produto.js';
+import ValidacaoJogo from '../models/Validacao_Jogo.js';
 
 export function criarProdutoService( {produtoModel} ){
     async function listar() {
@@ -10,17 +10,24 @@ export function criarProdutoService( {produtoModel} ){
             throw new TypeError('ID deve ser um número inteiro positivo');
         }
         const produto = await produtoModel.buscarPorId(id);
-        if (!produto) throw new Error(`Produto {id} não foi encontrado`);
+        if (!produto) throw new Error('Jogo não encontrado.');
         return produto; 
     }
     async function criar(dados) {
-        const produto = new Produto({id:1, ...dados});
-        return produtoModel.criar({
-            nome: produto.nome,
-            preco: produto.preco,
-            estoque: produto.estoque,
-            categoria: produto.categoria
-        });
+        // O ID definitivo é gerado pelo model, nunca pelo formulário.
+        const produto = new ValidacaoJogo({...dados, id: 1});
+        return produtoModel.criar(produto);
     }
-    return {listar, buscarPorId, criar}
+    async function atualizar(idRecebido, dados) {
+        const atual = await buscarPorId(idRecebido);
+        const produto = new ValidacaoJogo({...dados, id: atual.id});
+        return produtoModel.atualizar(atual.id, produto);
+    }
+
+    async function excluir(idRecebido) {
+        const produto = await buscarPorId(idRecebido);
+        return produtoModel.excluir(produto.id);
+    }
+
+    return {listar, buscarPorId, criar, atualizar, excluir}
 }
