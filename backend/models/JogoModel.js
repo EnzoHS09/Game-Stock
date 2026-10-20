@@ -1,5 +1,5 @@
 // Dados iniciais de demonstração. Preços e quantidades são fictícios.
-// Os arquivos de imagem deverão ficar em frontend/public/imagens.
+// O array volta ao estado inicial quando a API é reiniciada.
 let jogos = [
     {
         id: 1,
@@ -112,5 +112,39 @@ let jogos = [
         quantidade: 0
     }
 ];
+
+let proximoId = 11;
+
+export function criarJogoModel() {
+    async function listarTodos() {
+        return jogos;
+    }
+
+    async function buscarPorId(id) {
+        return jogos.find(jogo => jogo.id === id);
+    }
+
+    async function criar(dados) {
+        const jogo = { ...dados, id: proximoId++ };
+        jogos.push(jogo);
+        return jogo;
+    }
+
+    async function atualizar(id, dados) {
+        const indice = jogos.findIndex(jogo => jogo.id === id);
+        if (indice === -1) return null;
+        jogos[indice] = { ...jogos[indice], ...dados, id };
+        return jogos[indice];
+    }
+
+    async function excluir(id) {
+        const indice = jogos.findIndex(jogo => jogo.id === id);
+        if (indice === -1) return null;
+        const [jogo] = jogos.splice(indice, 1);
+        return jogo;
+    }
+
+    return { listarTodos, buscarPorId, criar, atualizar, excluir };
+}
 
 
