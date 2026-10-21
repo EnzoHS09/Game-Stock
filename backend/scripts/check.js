@@ -22,9 +22,6 @@ for (const arquivo of arquivos) {
     const resultado = spawnSync(process.execPath, ['--check', arquivo], { stdio: 'inherit' });
     if (resultado.status !== 0) {
         process.exit(resultado.status || 1);
-        break;
-    }
-    if (!process.exitCode) {
-        console.log(`${arquivos.length} arquivos JavaScript verificados`);
     }
 }
+console.log(`${arquivos.length} arquivos JavaScript verificados`);
