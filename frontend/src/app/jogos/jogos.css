@@ -1,0 +1,627 @@
+.resumos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 17px;
+  margin-bottom: 30px;
+}
+
+.resumo {
+  position: relative;
+  padding: 20px 21px 18px;
+  background: var(--painel);
+  border: 1px solid var(--borda);
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.resumo::before {
+  content: "";
+  position: absolute;
+  height: 2px;
+  top: 0;
+  left: 21px;
+  right: 21px;
+  background: linear-gradient(90deg, #8050cc, transparent);
+}
+
+.resumo > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #b0a9c2;
+  font-size: 12px;
+}
+
+.resumo svg {
+  width: 18px;
+  height: 18px;
+  color: var(--roxo);
+}
+
+.resumo > strong {
+  display: block;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.9px;
+  margin-top: 16px;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+
+.resumo > small {
+  display: block;
+  font-size: 11px;
+  color: #9892a7;
+  margin-top: 6px;
+}
+
+.resumo.azul::before {
+  background: linear-gradient(90deg, #4a7ac9, transparent);
+}
+
+.resumo.azul svg {
+  color: var(--azul);
+}
+
+.catalogo {
+  background: var(--painel);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.titulo-catalogo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 23px 24px;
+}
+
+.titulo-catalogo h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.titulo-catalogo h2 > span {
+  display: inline-block;
+  min-width: 24px;
+  padding: 1px 7px;
+  border: 1px solid #41324f;
+  border-radius: 5px;
+  background: #271c35;
+  color: #c8adf3;
+  font-size: 10px;
+  text-align: center;
+}
+
+.titulo-catalogo p {
+  margin-top: 5px;
+  color: var(--cinza);
+  font-size: 12px;
+}
+
+.rotulo-catalogo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #928c9f;
+  font-size: 9px;
+  letter-spacing: 1.3px;
+}
+
+.rotulo-catalogo svg {
+  width: 16px;
+  height: 16px;
+  color: #a391c3;
+}
+
+.ferramentas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 17px;
+  padding: 0 24px 20px;
+}
+
+.filtros {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid #292530;
+  background: #0e0d13;
+  border-radius: 6px;
+}
+
+.filtros button {
+  padding: 7px 10px;
+  min-height: 33px;
+  background: transparent;
+  color: #a59db5;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.filtros button:hover {
+  color: #ece3ff;
+}
+
+.filtros button.ativo {
+  background: #292033;
+  border-color: #43324f;
+  color: #ddc8ff;
+}
+
+.filtros button > span {
+  padding: 0 4px;
+  margin-left: 4px;
+  background: #34233e;
+  border-radius: 3px;
+  color: #d2b0f1;
+  font-size: 10px;
+}
+
+.busca {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #332d3d;
+  border-radius: 6px;
+  background: #0e0d13;
+  padding: 10px 12px;
+  width: 240px;
+  min-width: 170px;
+  color: #92879f;
+}
+
+.busca svg {
+  width: 16px;
+  height: 16px;
+}
+
+.busca input {
+  min-width: 0;
+  width: 100%;
+  color: var(--texto);
+  background: transparent;
+  border: 0;
+  font-size: 11px;
+  outline: none;
+}
+
+.busca input::placeholder {
+  color: #958aab;
+}
+
+.busca:focus-within {
+  border-color: var(--roxo);
+  outline: 1px solid var(--roxo);
+}
+
+.tabela {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th {
+  background: #19171f;
+  color: #a29aaa;
+  padding: 12px 20px;
+  border-top: 1px solid var(--borda);
+  border-bottom: 1px solid var(--borda);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+td {
+  padding: 17px 20px;
+  border-bottom: 1px solid #24212c;
+  font-size: 12px;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+tbody tr:hover {
+  background: #1a1721;
+}
+
+.jogo-nome {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.capa {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 47px;
+  border: 1px solid #59406e;
+  border-radius: 5px;
+  background: linear-gradient(140deg, #3d254e, #21233c);
+  color: #d3b3fc;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.capa::before {
+  content: "";
+  width: 2px;
+  height: 29px;
+  background: #a37cd9;
+  position: absolute;
+  left: 0;
+  top: 8px;
+  border-radius: 1px;
+  opacity: 0.65;
+}
+
+.capa-azul {
+  color: #aaceff;
+  border-color: #3a5576;
+  background: linear-gradient(140deg, #20354e, #20213c);
+}
+
+.capa-azul::before {
+  background: #7aa9e7;
+}
+
+.nome-link {
+  display: block;
+  font-size: 13px;
+  font-weight: 550;
+  max-width: 270px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.nome-link:hover {
+  color: var(--roxo);
+}
+
+.jogo-nome small {
+  display: block;
+  color: #a097af;
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+.jogo-nome small > span {
+  margin-inline: 4px;
+  color: #676072;
+}
+
+.plataforma {
+  display: inline-block;
+  white-space: nowrap;
+  background: #1b1b25;
+  color: #bcb9ce;
+  border: 1px solid #302d3b;
+  padding: 4px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+}
+
+.preco {
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.estoque {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.estoque > span:first-child {
+  font-size: 11px;
+  color: #ddd8e6;
+}
+
+.coluna-acoes {
+  text-align: right;
+}
+
+.acoes-linha {
+  display: flex;
+  justify-content: flex-end;
+  gap: 3px;
+}
+
+.acao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: #a69cb6;
+  background: transparent;
+}
+
+.acao svg {
+  width: 15px;
+  height: 15px;
+}
+
+.acao:hover {
+  color: #d7bcff;
+  background: #2c223c;
+  border-color: #473354;
+}
+
+.acao.excluir:hover {
+  color: var(--erro);
+  background: #33202a;
+  border-color: #513040;
+}
+
+.fim-catalogo {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--borda);
+  background: #15131b;
+  padding: 15px 24px;
+  color: #a198b0;
+  font-size: 10px;
+}
+
+.fim-catalogo strong {
+  color: #d5ccdf;
+  font-weight: 500;
+}
+
+@media (max-width: 1200px) {
+  td,
+  th {
+    padding-inline: 13px;
+  }
+
+  .resumo {
+    padding: 19px 17px;
+  }
+
+  .resumo > strong {
+    font-size: 27px;
+  }
+
+  .resumo > div {
+    font-size: 11px;
+  }
+
+  .resumos {
+    gap: 12px;
+  }
+
+  .ferramentas,
+  .titulo-catalogo {
+    padding-inline: 18px;
+  }
+
+  .ferramentas {
+    flex-wrap: wrap;
+  }
+
+  .busca {
+    flex: 1;
+  }
+
+  .jogo-nome {
+    gap: 9px;
+  }
+
+  .nome-link {
+    font-size: 12px;
+  }
+
+  .acao {
+    padding: 7px;
+  }
+
+}
+
+@media (min-width: 701px) and (max-width: 1020px) {
+  .resumo > strong {
+    font-size: 23px;
+  }
+
+  .resumo > div > svg {
+    display: none;
+  }
+
+  .resumo > small {
+    font-size: 10px;
+  }
+
+  td,
+  th {
+    padding-inline: 10px;
+  }
+
+  .capa {
+    display: none;
+  }
+
+  .acoes-linha {
+    flex-wrap: wrap;
+  }
+
+}
+
+@media (max-width: 700px) {
+  .resumos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+    margin-bottom: 24px;
+  }
+
+  .resumo {
+    padding: 16px;
+  }
+
+  .resumo:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .resumo > strong {
+    margin-top: 11px;
+    font-size: 28px;
+  }
+
+  .resumo > div {
+    font-size: 11px;
+  }
+
+  .resumo svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .titulo-catalogo {
+    padding: 20px 17px;
+  }
+
+  .titulo-catalogo h2 {
+    font-size: 15px;
+  }
+
+  .rotulo-catalogo {
+    display: none;
+  }
+
+  .ferramentas {
+    padding: 0 17px 18px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .filtros {
+    justify-content: space-between;
+  }
+
+  .filtros button {
+    min-height: 37px;
+    font-size: 10px;
+    padding-inline: 8px;
+    flex: 1;
+  }
+
+  .busca {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .busca input {
+    font-size: 16px;
+  }
+
+  .busca input::placeholder {
+    font-size: 12px;
+  }
+
+  table,
+  tbody,
+  tr,
+  td {
+    display: block;
+    width: 100%;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    padding: 19px 17px 10px;
+    border-top: 1px solid var(--borda);
+  }
+
+  td {
+    border: 0;
+    padding: 7px 0;
+  }
+
+  td[data-label] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+
+  td[data-label]::before {
+    content: attr(data-label);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--cinza);
+  }
+
+  .jogo-nome {
+    gap: 13px;
+    padding-bottom: 8px;
+  }
+
+  .nome-link {
+    font-size: 14px;
+    max-width: none;
+  }
+
+  .capa {
+    width: 42px;
+    height: 51px;
+  }
+
+  .estoque {
+    align-items: flex-end;
+  }
+
+  .acoes-linha {
+    border-top: 1px solid #28222f;
+    margin-top: 6px;
+    padding-top: 9px;
+    gap: 10px;
+  }
+
+  .acao {
+    min-width: 44px;
+    min-height: 44px;
+    background: #1c1725;
+    border-color: #33283f;
+  }
+
+  .acao svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .fim-catalogo {
+    padding: 15px 17px;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+}
