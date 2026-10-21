@@ -1,8 +1,8 @@
 import express from 'express';
 import { criarJogoModel } from './models/JogoModel.js';
-import { criarProdutoService } from './services/ProdutoService.js';
-import criarProdutoController from './services/controllers/ProdutoController.js';
-import { criarProdutoRoutes } from './routes/produtoRoutes.js';
+import { criarJogoService } from './services/JogoService.js';
+import criarJogoController from './services/controllers/JogoController.js';
+import { criarJogoRoutes } from './routes/jogoRoutes.js';
 
 export const app = express();
 
@@ -17,17 +17,17 @@ app.use((req, res, next) => {
 
 // Ensina o Express a ler o corpo da requisição em JSON.
 app.use(express.json());
-const produtoModel = criarJogoModel();
-const produtoService = criarProdutoService( {produtoModel} );
-const produtoController = criarProdutoController( {produtoService} );
-const produtoRoutes = criarProdutoRoutes( {produtoController} );
+const jogoModel = criarJogoModel();
+const jogoService = criarJogoService( {jogoModel} );
+const jogoController = criarJogoController( {jogoService} );
+const jogoRoutes = criarJogoRoutes( {jogoController} );
 
 //Testar a api
 app.get('/api/check', (req, res) => {
   res.status(200).json({status:'ok', mensagem: 'Servidor funcionando via HTTP!'});
 });
 
-app.use('/api/jogos', produtoRoutes);
+app.use('/api/jogos', jogoRoutes);
 
 app.use((req, res) => {
   res.status(404).json({sucesso: false, erro: `A rota ${req.method} ${req.originalUrl} não existe`});
