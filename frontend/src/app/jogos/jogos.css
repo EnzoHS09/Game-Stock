@@ -264,6 +264,11 @@ tbody tr:hover {
   letter-spacing: -1px;
 }
 
+img.capa {
+  object-fit: contain;
+  background: transparent;
+}
+
 .capa::before {
   content: "";
   width: 2px;
