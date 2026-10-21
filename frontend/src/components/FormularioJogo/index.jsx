@@ -82,7 +82,7 @@ export default function FormularioJogo({ jogo }) {
             </form>
             <aside className="previa">
                 <p className="legenda-menu">PRÉVIA DO REGISTRO</p>
-                <div className="previa-capa"><Icone nome="jogos" /><strong>{dados.nome.trim() ? iniciais(dados.nome) : "GS"}</strong><span>{dados.plataforma || "Sua próxima adição ao catálogo"}</span></div>
+                <div className={`previa-capa ${jogo?.imagem ? "com-imagem" : ""}`}>{jogo?.imagem ? <img src={jogo.imagem} alt={`Capa de ${jogo.nome} para ${jogo.plataforma}`} /> : <><Icone nome="jogos" /><strong>{dados.nome.trim() ? iniciais(dados.nome) : "GS"}</strong></>}<span>{dados.plataforma || "Sua próxima adição ao catálogo"}</span></div>
                 <h2>{dados.nome.trim() || "Nome do jogo"}</h2><p>{dados.genero || "Gênero do jogo"}</p>
                 <div className="previa-valores"><div><small>Preço unitário</small><strong>{moeda(Number(dados.preco.replace(",", ".")) || 0)}</strong></div><div><small>Quantidade</small><strong>{dados.quantidade || "0"} un.</strong></div></div>
                 <div className="dica"><Icone nome="caixa" /><p>O mesmo título em plataformas diferentes deve ter registros separados.</p></div>
