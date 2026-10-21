@@ -626,6 +626,17 @@ h1 {
   text-align: center;
 }
 
+.previa-capa.com-imagem {
+  aspect-ratio: auto;
+}
+
+.previa-capa > img {
+  display: block;
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+}
+
 .previa-capa svg {
   color: #bda6eb;
   width: 26px;
@@ -774,6 +785,14 @@ h1 {
   border-radius: 10px;
   background: linear-gradient(145deg, #352246, #1a223c 70%, #1b3550);
   color: #ceb8ff;
+}
+
+.capa-detalhe > img {
+  display: block;
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  margin: 16px 0;
 }
 
 .capa-detalhe > span {
