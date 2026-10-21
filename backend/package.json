@@ -1,8 +1,8 @@
 {
-  "name": "api_produtos",
+  "name": "api_jogos",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
@@ -12,7 +12,6 @@
   "type": "module",
   "private": true,
   "dependencies": {
-    "express": "^5.2.1",
-    "mysql2": "^3.24.4"
+    "express": "^5.2.1"
   }
 }
