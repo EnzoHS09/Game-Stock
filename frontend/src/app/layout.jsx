@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
           <Menu />
           <div className="area">
             <header className="barra">
-              <span>Workspace <span className="separador">/</span> <strong>Estoque da loja</strong></span>
+              <span>Painel <span className="separador">/</span> <strong>Estoque da loja</strong></span>
               <span className="etiqueta">Jogos físicos</span>
             </header>
             <main id="conteudo" className="conteudo">{children}</main>
