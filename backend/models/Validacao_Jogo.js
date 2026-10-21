@@ -25,25 +25,4 @@ export default class ValidacaoJogo {
         });
     }
 
-    calcularValorEmEstoque() {
-        return this.preco * this.quantidade;
-    }
-
-    calcularPrecoComDesconto(percentual) {
-        if (!Number.isFinite(percentual) || percentual < 0 || percentual > 100) {
-            throw new RangeError('Desconto deve estar entre 0 e 100');
-        }
-        return this.preco * (1 - percentual / 100);
-    }
-
-    retirar(quantidade) {
-            if (!Number.isInteger(quantidade) || quantidade <= 0) {
-                throw new RangeError('Quantidade de saída inválida');
-            }
-            if (quantidade > this.quantidade) {
-                throw new RangeError('Estoque insuficiente');
-            }
-            this.quantidade -= quantidade;
-    }
-
 }
