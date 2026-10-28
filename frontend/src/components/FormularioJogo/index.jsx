@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import Icone from "@/components/Icone";
 import { api, plataformas, generos, moeda, iniciais, lerResposta } from "@/utils/jogo";
@@ -12,18 +12,65 @@ export default function FormularioJogo({ jogo }) {
         genero: jogo ? jogo.genero : "",
         preco: jogo ? jogo.preco.toFixed(2).replace(".", ",") : "",
         quantidade: jogo ? String(jogo.quantidade) : "",
+        imagem: jogo?.imagem || "",
     });
     const [erros, setErros] = useState({});
     const [erro, setErro] = useState("");
     const [salvando, setSalvando] = useState(false);
     const [salvo, setSalvo] = useState(null);
+    const [lendoImagem, setLendoImagem] = useState(false);
+    const campoImagem = useRef(null);
 
     function alterar(evento) {
         setDados({ ...dados, [evento.target.name]: evento.target.value });
     }
 
+    async function escolherImagem(evento) {
+        const arquivo = evento.target.files?.[0];
+        if (!arquivo) return;
+        if (!["image/png", "image/jpeg", "image/webp"].includes(arquivo.type)) {
+            setErros(atual => ({ ...atual, imagem: "Selecione uma imagem PNG, JPG ou WebP." }));
+            evento.target.value = "";
+            return;
+        }
+        if (arquivo.size > 5 * 1024 * 1024) {
+            setErros(atual => ({ ...atual, imagem: "A imagem deve ter até 5 MB." }));
+            evento.target.value = "";
+            return;
+        }
+        setLendoImagem(true);
+        try {
+            const imagem = await new Promise((resolve, reject) => {
+                const leitor = new FileReader();
+                leitor.onload = () => resolve(leitor.result);
+                leitor.onerror = () => reject(new Error("Não foi possível ler a imagem."));
+                leitor.readAsDataURL(arquivo);
+            });
+            await new Promise((resolve, reject) => {
+                const previa = new Image();
+                previa.onload = resolve;
+                previa.onerror = () => reject(new Error("O arquivo selecionado não contém uma imagem válida."));
+                previa.src = imagem;
+            });
+            setDados(atual => ({ ...atual, imagem }));
+            setErros(atual => ({ ...atual, imagem: "" }));
+        } catch (erro) {
+            setErros(atual => ({ ...atual, imagem: erro.message }));
+            if (campoImagem.current) campoImagem.current.value = "";
+        } finally {
+            setLendoImagem(false);
+        }
+    }
+
+    function removerImagem() {
+        setDados(atual => ({ ...atual, imagem: "" }));
+        setErros(atual => ({ ...atual, imagem: "" }));
+        if (campoImagem.current) campoImagem.current.value = "";
+    }
+
     async function salvar(evento) {
         evento.preventDefault();
+        if (lendoImagem || salvando) return;
         const problemas = {};
         const preco = Number(dados.preco.replace(",", "."));
         const quantidade = Number(dados.quantidade);
@@ -33,6 +80,7 @@ export default function FormularioJogo({ jogo }) {
         if (!generos.includes(dados.genero)) problemas.genero = "Selecione o gênero do jogo.";
         if (!/^\d+([.,]\d{1,2})?$/.test(dados.preco) || !Number.isFinite(preco)) problemas.preco = "Informe um preço válido, com até duas casas decimais.";
         if (dados.quantidade.trim() === "" || !Number.isInteger(quantidade) || quantidade < 0) problemas.quantidade = "Informe uma quantidade inteira maior ou igual a zero.";
+        if (erros.imagem) problemas.imagem = erros.imagem;
 
         setErros(problemas);
         setErro("");
@@ -67,7 +115,7 @@ export default function FormularioJogo({ jogo }) {
         <div className="layout-formulario">
             <form className="painel" onSubmit={salvar} noValidate>
                 <div className="titulo-painel"><span className="icone-painel"><Icone nome="jogos" /></span><div><h2>Informações do jogo</h2><p>Preencha os dados do jogo no catálogo.</p></div></div>
-                <fieldset disabled={salvando} className="campos">
+                <fieldset disabled={salvando || lendoImagem} className="campos">
                     <legend className="oculto">Dados do jogo</legend>
                     {Object.keys(erros).length > 0 && <p className="mensagem erro campo-inteiro" role="alert">Confira os campos indicados antes de salvar.</p>}
                     {erro && <p className="mensagem erro campo-inteiro" role="alert">{erro}</p>}
@@ -76,13 +124,20 @@ export default function FormularioJogo({ jogo }) {
                     <div className="campo"><label htmlFor="genero">Gênero <span>*</span></label><select id="genero" name="genero" value={dados.genero} onChange={alterar} required aria-invalid={!!erros.genero} aria-describedby={erros.genero ? "erro-genero" : undefined}><option value="">Selecione o gênero</option>{generos.map(item => <option key={item}>{item}</option>)}</select>{erros.genero && <small className="erro-campo" id="erro-genero">{erros.genero}</small>}</div>
                     <div className="campo"><label htmlFor="preco">Preço unitário <span>*</span></label><div className="campo-preco"><span>R$</span><input id="preco" name="preco" inputMode="decimal" value={dados.preco} onChange={alterar} placeholder="0,00" required aria-invalid={!!erros.preco} aria-describedby={erros.preco ? "erro-preco" : undefined} /></div>{erros.preco && <small className="erro-campo" id="erro-preco">{erros.preco}</small>}</div>
                     <div className="campo"><label htmlFor="quantidade">Quantidade <span>*</span></label><input id="quantidade" name="quantidade" type="number" min="0" step="1" value={dados.quantidade} onChange={alterar} placeholder="0" required aria-invalid={!!erros.quantidade} aria-describedby={erros.quantidade ? "erro-quantidade" : "dica-quantidade"} />{erros.quantidade ? <small className="erro-campo" id="erro-quantidade">{erros.quantidade}</small> : <small id="dica-quantidade">Número de cópias físicas disponíveis.</small>}</div>
-                    <p className="nota-formulario campo-inteiro"><span>*</span> Todos os campos são obrigatórios. Preço e quantidade podem ser zero.</p>
+                    <div className="campo campo-inteiro">
+                        <label htmlFor="imagem">Imagem do jogo</label>
+                        <input ref={campoImagem} id="imagem" name="imagem" type="file" accept="image/png,image/jpeg,image/webp" onChange={escolherImagem} aria-invalid={!!erros.imagem} aria-describedby={erros.imagem ? "erro-imagem" : "dica-imagem"} />
+                        {erros.imagem ? <small className="erro-campo" id="erro-imagem" role="alert">{erros.imagem}</small> : <small id="dica-imagem">Opcional. PNG, JPG ou WebP de até 5 MB. A imagem aparece na prévia ao lado.</small>}
+                        {lendoImagem && <p role="status">Lendo imagem...</p>}
+                        {(dados.imagem || erros.imagem) && <button type="button" className="botao secundario" onClick={removerImagem}>Remover imagem</button>}
+                    </div>
+                    <p className="nota-formulario campo-inteiro"><span>*</span> Os campos com asterisco são obrigatórios. Preço e quantidade podem ser zero.</p>
                 </fieldset>
-                <div className="acoes-formulario">{!salvando && <Link href={jogo ? `/jogos/${jogo.id}` : "/jogos"} className="botao secundario">Cancelar</Link>}<button className="botao" type="submit" disabled={salvando}>{salvando ? "Salvando..." : jogo ? "Salvar alterações" : "Cadastrar jogo"}<Icone nome="seta" /></button></div>
+                <div className="acoes-formulario">{!salvando && <Link href={jogo ? `/jogos/${jogo.id}` : "/jogos"} className="botao secundario">Cancelar</Link>}<button className="botao" type="submit" disabled={salvando || lendoImagem}>{salvando ? "Salvando..." : lendoImagem ? "Lendo imagem..." : jogo ? "Salvar alterações" : "Cadastrar jogo"}<Icone nome="seta" /></button></div>
             </form>
             <aside className="previa">
                 <p className="legenda-menu">PRÉVIA DO REGISTRO</p>
-                <div className={`previa-capa ${jogo?.imagem ? "com-imagem" : ""}`}>{jogo?.imagem ? <img src={jogo.imagem} alt={`Capa de ${jogo.nome} para ${jogo.plataforma}`} /> : <><Icone nome="jogos" /><strong>{dados.nome.trim() ? iniciais(dados.nome) : "GS"}</strong></>}<span>{dados.plataforma || "Sua próxima adição ao catálogo"}</span></div>
+                <div className={`previa-capa ${dados.imagem ? "com-imagem" : ""}`}>{dados.imagem ? <img src={dados.imagem} alt={`Capa de ${dados.nome || "jogo"} para ${dados.plataforma || "a plataforma selecionada"}`} /> : <><Icone nome="jogos" /><strong>{dados.nome.trim() ? iniciais(dados.nome) : "GS"}</strong></>}<span>{dados.plataforma || "Sua próxima adição ao catálogo"}</span></div>
                 <h2>{dados.nome.trim() || "Nome do jogo"}</h2><p>{dados.genero || "Gênero do jogo"}</p>
                 <div className="previa-valores"><div><small>Preço unitário</small><strong>{moeda(Number(dados.preco.replace(",", ".")) || 0)}</strong></div><div><small>Quantidade</small><strong>{dados.quantidade || "0"} un.</strong></div></div>
                 <div className="dica"><Icone nome="caixa" /><p>O mesmo título em plataformas diferentes deve ter registros separados.</p></div>

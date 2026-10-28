@@ -20,7 +20,8 @@ export function criarJogoService( {jogoModel} ){
     }
     async function atualizar(idRecebido, dados) {
         const atual = await buscarPorId(idRecebido);
-        const jogo = new ValidacaoJogo({...dados, id: atual.id});
+        const imagem = dados.imagem === undefined ? atual.imagem : dados.imagem;
+        const jogo = new ValidacaoJogo({...dados, id: atual.id, imagem});
         return jogoModel.atualizar(atual.id, jogo);
     }
 

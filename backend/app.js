@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 });
 
 // Ensina o Express a ler o corpo da requisição em JSON.
-app.use(express.json());
+app.use(express.json({ limit: '7mb' }));
 const jogoModel = criarJogoModel();
 const jogoService = criarJogoService( {jogoModel} );
 const jogoController = criarJogoController( {jogoService} );
@@ -34,6 +34,9 @@ app.use((req, res) => {
 })
 
 app.use((erro, req, res, _next)=>{
+  if (erro.type === 'entity.too.large') {
+    return res.status(413).json({ sucesso: false, erro: 'Os dados enviados são muito grandes. Use uma imagem de até 5 MB.' });
+  }
   if (erro instanceof SyntaxError && erro.status === 400) {
     return res.status(400).json({ sucesso: false, erro: 'Envie um JSON válido.' });
   }
